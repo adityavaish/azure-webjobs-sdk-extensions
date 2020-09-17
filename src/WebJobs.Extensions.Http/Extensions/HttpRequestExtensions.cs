@@ -78,15 +78,6 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
             return FromBase64EncodedJson<StaticWebAppsClientPrincipal>(headerValue, StaticWebAppsClaimsIdentitySerializer.Value);
         }
 
-        private static ClaimsIdentity GetClaimsIdentityFromStaticWebAppsClientPrincipal(StaticWebAppsClientPrincipal staticWebAppsClientPrincipal)
-        {
-            var staticWebAppsIdentity = new ClaimsIdentity(staticWebAppsClientPrincipal.IdentityProvider);
-            staticWebAppsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, staticWebAppsClientPrincipal.UserId));
-            staticWebAppsIdentity.AddClaim(new Claim(ClaimTypes.Name, staticWebAppsClientPrincipal.UserDetails));
-            staticWebAppsIdentity.AddClaims(staticWebAppsClientPrincipal.UserRoles.Select(r => new Claim(ClaimTypes.Role, r)));
-            return staticWebAppsIdentity;
-        }
-
         private static ClaimsIdentity FromBase64EncodedJson<T>(string payload, DataContractJsonSerializer serializer)
             where T : IIdentityPrincipal
         {
