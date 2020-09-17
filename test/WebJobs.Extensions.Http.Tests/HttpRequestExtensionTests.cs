@@ -41,5 +41,45 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http.Tests
             Assert.Equal("role", claim2.Type);
             Assert.Equal("Software Engineer", claim2.Value);
         }
+
+        [Fact]
+        public void GetStaticWebAppsIdentity_ReturnsIdentity()
+        {
+            HttpRequest req = new DefaultHttpContext().Request;
+
+            var staticWebAppsClientPrincipal = new StaticWebAppsClientPrincipal
+            {
+                IdentityProvider = "facebook",
+                UserId = "50cf51ecad1a49429e35243afde6b92b",
+                UserDetails = "mikarmar@microsoft.com",
+                UserRoles = new List<string>
+                {
+                    "admin",
+                    "super_admin",
+                },
+            };
+
+            //Load onto header
+            string json = JsonConvert.SerializeObject(staticWebAppsClientPrincipal);
+            byte[] bytes = Encoding.UTF8.GetBytes(json);
+            string encodedHeaderValue = Convert.ToBase64String(bytes);
+            req.Headers["x-ms-client-principal"] = encodedHeaderValue;
+
+            ClaimsIdentity staticWebAppsIdentity = req.GetStaticWebAppsIdentity();
+
+            Assert.Equal("facebook", staticWebAppsIdentity.AuthenticationType);
+            var userIdClaim = staticWebAppsIdentity.Claims.ElementAt(0);
+            Assert.Equal(ClaimTypes.NameIdentifier, userIdClaim.Type);
+            Assert.Equal("50cf51ecad1a49429e35243afde6b92b", userIdClaim.Value);
+            var userDetailsClaim = staticWebAppsIdentity.Claims.ElementAt(1);
+            Assert.Equal(ClaimTypes.Name, userDetailsClaim.Type);
+            Assert.Equal("mikarmar@microsoft.com", userDetailsClaim.Value);
+            var rolesClaim1 = staticWebAppsIdentity.Claims.ElementAt(2);
+            Assert.Equal(ClaimTypes.Role, rolesClaim1.Type);
+            Assert.Equal("admin", rolesClaim1.Value);
+            var rolesClaim2 = staticWebAppsIdentity.Claims.ElementAt(3);
+            Assert.Equal(ClaimTypes.Role, rolesClaim2.Type);
+            Assert.Equal("super_admin", rolesClaim2.Value);
+        }
     }
 }

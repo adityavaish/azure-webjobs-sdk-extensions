@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
     /// </summary>
     [DataContract]
     [KnownType(typeof(ClaimSlim))]
-    internal struct ClaimsIdentitySlim
+    internal struct ClaimsIdentitySlim : IIdentityPrincipal
     {
         [DataMember(Name = "auth_typ")]
         internal string AuthenticationType;
@@ -58,7 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
             return result;
         }
 
-        internal JObject ToJObject()
+        public JObject ToJObject()
         {
             var jObj = new JObject();
             jObj["authenticationType"] = AuthenticationType;
