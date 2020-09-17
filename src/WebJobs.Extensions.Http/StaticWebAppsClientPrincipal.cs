@@ -37,32 +37,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
             staticWebAppsIdentity.AddClaims(this.UserRoles.Select(r => new Claim(ClaimTypes.Role, r)));
             return staticWebAppsIdentity;
         }
-
-        public static StaticWebAppsClientPrincipal FromClaimsIdentity(ClaimsIdentity identity)
-        {
-            var result = new StaticWebAppsClientPrincipal
-            {
-                IdentityProvider = identity.AuthenticationType,
-                UserRoles = new List<string>()
-            };
-
-            foreach (Claim claim in identity.Claims)
-            {
-                if (string.Equals(ClaimTypes.NameIdentifier, claim.Type))
-                {
-                    result.UserId = claim.Value;
-                }
-                else if (string.Equals(ClaimTypes.Name, claim.Type))
-                {
-                    result.UserDetails = claim.Value;
-                }
-                else if (string.Equals(ClaimTypes.Role, claim.Type))
-                {
-                    result.UserRoles.Add(claim.Value);
-                }
-            }
-
-            return result;
-        }
     }
 }

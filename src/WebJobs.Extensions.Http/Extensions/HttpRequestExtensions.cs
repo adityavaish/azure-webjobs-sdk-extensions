@@ -12,7 +12,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
 namespace Microsoft.Azure.WebJobs.Extensions.Http
 {
