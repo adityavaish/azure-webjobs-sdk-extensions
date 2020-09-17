@@ -12,7 +12,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
     internal interface IIdentityPrincipal
     {
         ClaimsIdentity ToClaimsIdentity();
-
-        JObject ToJObject();
     }
 }

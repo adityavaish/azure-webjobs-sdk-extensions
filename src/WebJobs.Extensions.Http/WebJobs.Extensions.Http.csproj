@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\build\common.props" />
   <PropertyGroup>
-    <Version>$(HttpVersion)</Version>
+    <Version>3.0.8.1</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.Http</AssemblyName>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.Http</RootNamespace>
     <PackageId>Microsoft.Azure.WebJobs.Extensions.Http</PackageId>
     <Description>This package adds binding extensions for Http.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>3.0.8.1</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

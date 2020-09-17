@@ -58,7 +58,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
             return result;
         }
 
-        public JObject ToJObject()
+        internal JObject ToJObject()
         {
             var jObj = new JObject();
             jObj["authenticationType"] = AuthenticationType;

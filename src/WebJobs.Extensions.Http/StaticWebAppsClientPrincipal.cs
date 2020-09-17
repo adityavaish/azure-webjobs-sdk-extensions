@@ -64,15 +64,5 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
 
             return result;
         }
-
-        public JObject ToJObject()
-        {
-            var jObj = new JObject();
-            jObj["identityProvider"] = IdentityProvider;
-            jObj["userId"] = UserId;
-            jObj["userDetails"] = UserDetails;
-            jObj["userRoles"] = new JArray(UserRoles.ToArray());
-            return jObj;
-        }
     }
 }
