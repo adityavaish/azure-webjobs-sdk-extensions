@@ -57,33 +57,49 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
                 string.Equals(headerValue.MediaType, "application/json", StringComparison.OrdinalIgnoreCase);
         }
 
-        public static ClaimsIdentity GetAppServiceIdentity(this HttpRequest request)
+        public static bool TryGetAppServiceIdentity(this HttpRequest request, out ClaimsIdentity claimsIdentity)
         {
+            claimsIdentity = null;
             if (!request.Headers.ContainsKey(EasyAuthIdentityHeader))
             {
-                return null;
+                return false;
             }
+
             string headerValue = request.Headers[EasyAuthIdentityHeader].First();
-            return FromBase64EncodedJson<ClaimsIdentitySlim>(headerValue, EasyAuthClaimsIdentitySerializer.Value);
+            ClaimsIdentitySlim claimsIdentitySlim = FromBase64EncodedJson<ClaimsIdentitySlim>(headerValue, EasyAuthClaimsIdentitySerializer.Value);
+            if (claimsIdentitySlim.Equals(default(ClaimsIdentitySlim)))
+            {
+                return false;
+            }
+
+            claimsIdentity = claimsIdentitySlim.ToClaimsIdentity();
+            return true;
         }
 
-        public static ClaimsIdentity GetStaticWebAppsIdentity(this HttpRequest request)
+        public static bool TryGetStaticWebAppsIdentity(this HttpRequest request, out ClaimsIdentity claimsIdentity)
         {
+            claimsIdentity = null;
             if (!request.Headers.ContainsKey(EasyAuthIdentityHeader))
             {
-                return null;
+                return false;
             }
+
             string headerValue = request.Headers[EasyAuthIdentityHeader].First();
-            return FromBase64EncodedJson<StaticWebAppsClientPrincipal>(headerValue, StaticWebAppsClaimsIdentitySerializer.Value);
+            StaticWebAppsClientPrincipal staticWebAppsClientPrincipal = FromBase64EncodedJson<StaticWebAppsClientPrincipal>(headerValue, StaticWebAppsClaimsIdentitySerializer.Value);
+            if (staticWebAppsClientPrincipal.Equals(default(StaticWebAppsClientPrincipal)))
+            {
+                return false;
+            }
+
+            claimsIdentity = staticWebAppsClientPrincipal.ToClaimsIdentity();
+            return true;
         }
 
-        private static ClaimsIdentity FromBase64EncodedJson<T>(string payload, DataContractJsonSerializer serializer)
-            where T : IIdentityPrincipal
+        private static T FromBase64EncodedJson<T>(string payload, DataContractJsonSerializer serializer)
         {
             using (var buffer = new MemoryStream(Convert.FromBase64String(payload)))
             {
-                T decodedPayload = (T)serializer.ReadObject(buffer);
-                return decodedPayload.ToClaimsIdentity();
+                return (T)serializer.ReadObject(buffer);
             }
         }
 

@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
     /// </summary>
     [DataContract]
     [KnownType(typeof(ClaimSlim))]
-    internal struct ClaimsIdentitySlim : IIdentityPrincipal
+    internal struct ClaimsIdentitySlim
     {
         [DataMember(Name = "auth_typ")]
         internal string AuthenticationType;
