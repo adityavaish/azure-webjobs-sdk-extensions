@@ -15,7 +15,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http
     /// </summary>
     [DataContract]
     [KnownType(typeof(ClaimSlim))]
-    internal struct StaticWebAppsClientPrincipal
+    internal struct StaticWebAppsClientPrincipal : IIdentityPrincipal
     {
         [DataMember(Name = "identityProvider")]
         internal string IdentityProvider;

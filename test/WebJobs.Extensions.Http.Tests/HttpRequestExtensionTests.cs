@@ -29,7 +29,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http.Tests
             string encodedHeaderValue = Convert.ToBase64String(bytes);
             req.Headers["x-ms-client-principal"] = encodedHeaderValue;
 
-            Assert.True(req.TryGetAppServiceIdentity(out ClaimsIdentity easyAuthIdentity));
+            Assert.True(req.TryGetAuthIdentity(AuthIdentityEnum.AppServiceIdentity, out ClaimsIdentity easyAuthIdentity));
 
             Assert.Equal("aad", easyAuthIdentity.AuthenticationType);
             Assert.Equal("name", easyAuthIdentity.NameClaimType);
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http.Tests
             string encodedHeaderValue = Convert.ToBase64String(bytes);
             req.Headers["x-ms-client-principal"] = encodedHeaderValue;
 
-            Assert.True(req.TryGetStaticWebAppsIdentity(out ClaimsIdentity staticWebAppsIdentity));
+            Assert.True(req.TryGetAuthIdentity(AuthIdentityEnum.StaticWebAppsIdentity, out ClaimsIdentity staticWebAppsIdentity));
 
             Assert.Equal("facebook", staticWebAppsIdentity.AuthenticationType);
             var userIdClaim = staticWebAppsIdentity.Claims.ElementAt(0);
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http.Tests
             string encodedHeaderValue = Convert.ToBase64String(bytes);
             req.Headers["x-ms-client-principal"] = encodedHeaderValue;
 
-            Assert.False(req.TryGetAppServiceIdentity(out ClaimsIdentity staticWebAppsIdentity));
+            Assert.False(req.TryGetAuthIdentity(AuthIdentityEnum.AppServiceIdentity, out ClaimsIdentity staticWebAppsIdentity));
             Assert.Null(staticWebAppsIdentity);
         }
 
@@ -124,7 +124,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.Http.Tests
             string encodedHeaderValue = Convert.ToBase64String(bytes);
             req.Headers["x-ms-client-principal"] = encodedHeaderValue;
 
-            Assert.False(req.TryGetStaticWebAppsIdentity(out ClaimsIdentity easyAuthIdentity));
+            Assert.False(req.TryGetAuthIdentity(AuthIdentityEnum.StaticWebAppsIdentity, out ClaimsIdentity easyAuthIdentity));
             Assert.Null(easyAuthIdentity);
         }
     }
