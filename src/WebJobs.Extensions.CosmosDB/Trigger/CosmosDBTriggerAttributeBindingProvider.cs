@@ -197,6 +197,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.CosmosDB
                 documentCollectionLocation, 
                 leaseCollectionLocation, 
                 processorOptions, 
+                attribute.HostName,
                 monitoredCosmosDBService,
                 leaseCosmosDBService,
                 _logger);

@@ -147,6 +147,13 @@ namespace Microsoft.Azure.WebJobs
 
         /// <summary>
         /// Optional.
+        /// Gets or sets the host / instance name that will be used to uniquely identify the feed consumer.
+        /// Usually this could be Azure function name.
+        /// </summary>
+        public string HostName { get; set; } = null;
+
+        /// <summary>
+        /// Optional.
         /// Defines preferred locations (regions) for geo-replicated database accounts in the Azure Cosmos DB service.
         /// Values should be comma-separated.
         /// </summary>

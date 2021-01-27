@@ -22,6 +22,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.CosmosDB
         private readonly DocumentCollectionInfo _documentCollectionLocation;
         private readonly DocumentCollectionInfo _leaseCollectionLocation;
         private readonly ChangeFeedProcessorOptions _processorOptions;
+        private readonly string _hostName;
         private readonly ILogger _logger;
         private readonly IReadOnlyDictionary<string, Type> _emptyBindingContract = new Dictionary<string, Type>();
         private readonly IReadOnlyDictionary<string, object> _emptyBindingData = new Dictionary<string, object>();
@@ -32,6 +33,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.CosmosDB
             DocumentCollectionInfo documentCollectionLocation, 
             DocumentCollectionInfo leaseCollectionLocation, 
             ChangeFeedProcessorOptions processorOptions, 
+            string hostName,
             ICosmosDBService monitoredCosmosDBService,
             ICosmosDBService leasesCosmosDBService,
             ILogger logger)
@@ -39,6 +41,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.CosmosDB
             _documentCollectionLocation = documentCollectionLocation;
             _leaseCollectionLocation = leaseCollectionLocation;
             _processorOptions = processorOptions;
+            _hostName = hostName;
             _parameter = parameter;
             _logger = logger;
             _monitoredCosmosDBService = monitoredCosmosDBService;
@@ -83,7 +86,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.CosmosDB
                 this._processorOptions,
                 this._monitoredCosmosDBService,
                 this._leasesCosmosDBService,
-                this._logger));
+                this._logger,
+                hostName: this._hostName));
         }
 
         /// <summary>

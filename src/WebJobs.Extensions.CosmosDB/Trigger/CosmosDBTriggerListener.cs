@@ -67,12 +67,15 @@ namespace Microsoft.Azure.WebJobs.Extensions.CosmosDB
             ICosmosDBService monitoredCosmosDBService,
             ICosmosDBService leasesCosmosDBService,
             ILogger logger,
-            IRemainingWorkEstimator workEstimator = null)
+            IRemainingWorkEstimator workEstimator = null,
+            string hostName = null)
         {
             this._logger = logger;
             this._executor = executor;
             this._functionId = functionId;
-            this._hostName = Guid.NewGuid().ToString();
+            this._hostName = string.IsNullOrEmpty(hostName) ? 
+                Guid.NewGuid().ToString() : 
+                hostName;
 
             this._monitorCollection = documentCollectionLocation;
             this._leaseCollection = leaseCollectionLocation;
